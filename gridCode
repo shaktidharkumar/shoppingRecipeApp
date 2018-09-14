@@ -1,0 +1,159 @@
+
+    $scope.checkanswer = function () {
+        /*function for returning the initial values of boxes*/
+        var blueInitially = [];
+        var blue1 = [];
+        var blue2 = [];
+        var greeninitially = [];
+        var green1 = [];
+        var green2 = [];
+
+        for (let i = 1; i <= 64; i++) {
+            var bg = $(".draggable-obj.h" + i + "class").css('background-image');
+            bg = bg.replace('url("', '').replace('")', '');
+            if (bg.split('/').pop() == 'blue.png') {
+                blueInitially.push(Math.abs(Number($(".draggable-obj.h" + i + "class").attr("data-x"))));
+                blueInitially.push(Math.abs(Number($(".draggable-obj.h" + i + "class").attr("data-y"))));
+                console.log(blueInitially + "blueInitially");
+            } else if (bg.split('/').pop() == 'green.png') {
+                greeninitially.push(Math.abs(Number($(".draggable-obj.h" + i + "class").attr("data-x"))));
+                greeninitially.push(Math.abs(Number($(".draggable-obj.h" + i + "class").attr("data-y"))));
+                console.log(greeninitially + "greeninitially");
+            }
+        }
+
+        var coordsSize = 2;
+        var eachInitialGreenBlockArray = [];
+        var eachInitialBlueBlockArray = [];
+        for (let i = 0; i < greeninitially.length; i += coordsSize) {
+            eachInitialGreenBlockArray.push(greeninitially.slice(i, i + coordsSize));
+        }
+        for (let i = 0; i < blueInitially.length; i += coordsSize) {
+            eachInitialBlueBlockArray.push(blueInitially.slice(i, i + coordsSize));
+        }
+
+        console.log(eachInitialGreenBlockArray + " eachInitialGreenBlockArray");
+        console.log(eachInitialBlueBlockArray + " eachInitialBlueBlockArray");
+
+
+        console.log(eachInitialBlueBlockArray.sort() + " eachInitialBlueBlockArray sorted");
+
+        for (let i = 0; i < 2; i++) {
+            for (let j = 0; j <= 1; j++) {
+                if (i < 1) {
+                    blue1.push((eachInitialBlueBlockArray.sort())[i][j]);
+                    green1.push((eachInitialGreenBlockArray.sort())[i][j]);
+                } else {
+                    blue2.push((eachInitialBlueBlockArray.sort())[i][j]);
+                    green2.push((eachInitialGreenBlockArray.sort())[i][j]);
+                }
+            }
+        }
+        console.log(blue1 + "   blue   " + blue2 + "                " + green1 + "   green   " + green2)
+        //blue1.push(blueInitially);
+        /*function for returning the initial values of boxes*/
+
+
+
+        /*function for returning the dragged values of boxes*/
+        var greenDragged = [];
+        var blueDragged = [];
+        for (let i = 1; i <= 64; i++) {
+            var elem = $(".draggable-obj.h" + i + "class").children("div");
+            if (elem.hasClass("domino-dragger")) {
+                var elemSourceColor = elem.attr("source");
+                //console.log(elem.attr("source"));
+
+                if (elemSourceColor == "blue") {
+                    blueDragged.push(Math.abs(Number(elem.parent().attr("data-x"))));
+                    blueDragged.push(Math.abs(Number(elem.parent().attr("data-y"))));
+                    //blueDragged.push(":");
+                    //console.log(blueDragged);
+                } else if (elemSourceColor == "green") {
+                    greenDragged.push(Math.abs(Number(elem.parent().attr("data-x"))));
+                    greenDragged.push(Math.abs(Number(elem.parent().attr("data-y"))));
+                    //greenDragged.push(":");
+                    //console.log(greenDragged);
+                }
+            }
+        }
+
+        console.log((greenDragged.toString()));
+        console.log((greenDragged.toString()).split(":"));
+
+        var size = 2;
+        var eachGreenBlockArray = [];
+        var eachBlueBlockArray = [];
+        for (let i = 0; i < greenDragged.length; i += size) {
+            eachGreenBlockArray.push(greenDragged.slice(i, i + size));
+        }
+        for (let i = 0; i < blueDragged.length; i += size) {
+            eachBlueBlockArray.push(blueDragged.slice(i, i + size));
+        }
+
+
+        console.log(eachGreenBlockArray[0]);
+        console.log(eachBlueBlockArray[0]);
+
+
+        /*function for returning the dragged values of boxes*/
+
+
+        /*function to check the answer*/
+
+        var sortedGreenBlockArray = eachGreenBlockArray.sort();
+        var sortedBlueBlockArray = eachBlueBlockArray.sort();
+
+        if (sortedGreenBlockArray.length == 6) {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j <= 1; j++) {
+                    console.log(sortedGreenBlockArray[i][j] + " green array1 " + i + " DFS" + j + " green1 " + green1[j]);
+                    if (sortedGreenBlockArray[i][j] == green1[j]) {
+                        alert("well done green 1");
+                    } else {
+                        alert("wrong green 1");
+                    }
+                }
+            }
+
+            for (let i = 3; i < sortedGreenBlockArray.length; i++) {
+                for (let j = 0; j <= 1; j++) {
+                    console.log(sortedGreenBlockArray[i][j] + " green array2 " + i + " DFS " + j);
+                    if (sortedGreenBlockArray[i][j] == green2[j]) {
+                        alert("well done green 2");
+                    } else {
+                        alert("wrong green 2");
+                    }
+                }
+            }
+        } else {
+            console.log("Each green block not present");
+        }
+
+        if (sortedBlueBlockArray.length == 6) {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j <= 1; j++) {
+                    console.log(sortedBlueBlockArray[i][j] + " blue array1 " + i + " DFS" + j + " blue1 " + blue1[j]);
+                    if (sortedBlueBlockArray[i][j] == blue1[j]) {
+                        alert("well done blue 1");
+                    } else {
+                        alert("wrong blue 1");
+                    }
+                }
+            }
+
+            for (let i = 3; i < sortedBlueBlockArray.length; i++) {
+                for (let j = 0; j <= 1; j++) {
+                    console.log(sortedBlueBlockArray[i][j] + " blue array2 " + i + " DFS " + j);
+                    if (sortedBlueBlockArray[i][j] == blue2[j]) {
+                        alert("well done blue 2");
+                    } else {
+                        alert("wrong blue 2");
+                    }
+                }
+            }
+        } else {
+            console.log("Each blue block not present");
+        }
+
+        /*function to check the answer*/
